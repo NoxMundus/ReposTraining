@@ -16,6 +16,5 @@ variable "default_branch" {
 
 variable "reviewers_group_name" {
   description = "The name of the Azure DevOps group that will be used as reviewers"
-  default     = "reviewers"
   type        = string
 }
