@@ -1,0 +1,46 @@
+on:
+  workflow_dispatch:
+    push:
+    inputs:
+      project:
+        description: "Project Name"
+        required: true
+        default: "ada_pipelines_maio"
+      repositoryName:
+        description: "Repository Name"
+        type: string
+        required: true
+      grupoRevisores:
+        description: "Nome do grupo de revisores"
+        required: true
+        type: choice
+        default: "Contributors"
+        options:
+          - DevOps
+          - Contributors
+          - CreditoTeam
+
+name: "Aula 5 - Create Azure DevOps Repository"
+
+jobs:
+  create-repository:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        name: Setup Terraform
+
+      - name: "Terraform Init"
+        run: terraform init
+        working-directory: ./terraform
+
+      - name: "Terraform Init"
+        run: terraform apply -auto-approve -var="repository_name=${{ inputs.repositoryName }}"
+        if: github.event_name == 'workflow_dispatch'
+        working-directory: ./terraform
+        env:
+          AZDO_ORG_SERVICE_URL: ${{ vars.AZDO_ORG_SERVICE_URL }}
+          AZDO_PERSONAL_ACCESS_TOKEN: ${{ secrets.AZDO_PERSONAL_ACCESS_TOKEN }}
+          TF_VAR_project_name: ${{ inputs.project }}
