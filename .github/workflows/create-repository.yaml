@@ -5,7 +5,7 @@ on:
       project:
         description: "Project Name"
         required: true
-        default: "ada_pipelines_maio"
+        default: "Ada-Curso"
       repositoryName:
         description: "Repository Name"
         type: string
