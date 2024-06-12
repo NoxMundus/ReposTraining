@@ -1,26 +1,8 @@
 on:
   workflow_dispatch:
     push:
-    inputs:
-      project:
-        description: "Project Name"
-        required: true
-        default: "Ada-Curso"
-      repositoryName:
-        description: "Repository Name"
-        type: string
-        required: true
-      grupoRevisores:
-        description: "Nome do grupo de revisores"
-        required: true
-        type: choice
-        default: "Contributors"
-        options:
-          - DevOps
-          - Contributors
-          - CreditoTeam
 
-name: "Aula 5 - Create Azure DevOps Repository"
+name: "Projeto
 
 jobs:
   create-repository:
@@ -35,14 +17,15 @@ jobs:
       - name: "Terraform Init"
         run: terraform init
         working-directory: ./terraform
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY}}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY}}
 
       - name: "Terraform Apply"
-        run: terraform apply -auto-approve -var="repository_name=${{ inputs.repositoryName }}"
+        run: terraform apply -auto-approve
         if: github.event_name == 'workflow_dispatch'
         working-directory: ./terraform
         env:
-          AZDO_ORG_SERVICE_URL: ${{ vars.AZDO_ORG_SERVICE_URL }}
-          AZDO_PERSONAL_ACCESS_TOKEN: ${{ secrets.AZDO_PERSONAL_ACCESS_TOKEN }}
-          TF_VAR_project_name: ${{ inputs.project }}
-          #TF_VAR_reviewers_group_name: -var="reviewers_group_name=${{ inputs.grupoRevisores }}
-          TF_VAR_reviewers_group_name: ${{ inputs.grupoRevisores }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY}}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY}}
+
