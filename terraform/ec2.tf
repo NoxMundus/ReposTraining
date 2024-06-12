@@ -1,8 +1,13 @@
-resource "aws_instance" "testando_devops" {
+# provision to us-east-1 region
+provider "aws" {
+  region  = "us-east-1"
+}
+
+resource "aws_instance" "app_server" {
   ami           = "ami-08a0d1e16fc3f61ea"
   instance_type = "t2.micro"
 
-  tags = {
-    Name = "VM_Test"
+tags = {
+    Name = var.ec2_name
   }
 }
